@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Weather</title>
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@600&display=swap');
+		*{
+			padding: 0;
+			margin: 0;
+			font-family: 'Baloo 2', cursive;
+		}
+		body{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-direction: column;
+			height: 100vh;
+		}
+		h1{
+			margin-bottom: 20px;
+		}
+		.Weather-info-container{
+			margin-top:20px ;
+			width: 300px;
+			border: 2px solid #cecfd2;
+			height: 300px;
+			border-radius: 5px;
+			overflow: hidden;
+		}
+		#loctaion-name{
+			background:#cecfd2;
+			text-align: center;
+			padding: 7px 15px;
+		}
+		.weather-info{
+			width: 100%;
+			text-align: center;
+			margin-top: 20px;
+		}
+		#search-btn{
+			padding: 7px 10px;
+			background: #666666;
+			border: none;
+			color: white;
+			border-radius: 3px;
+			margin-left: 10px;
+		}
+		#search-box{
+			width: 200px;
+			padding: 5px 10px;
+
+		}
+		#search-btn:hover{
+			background: #4d4d4d;
+		}
+		small{
+			text-align: center;
+			position: absolute;
+			right: 43%;
+			top: 34px
+		}
+	</style>
+</head>
+<body>
+
+<header>
+	<h1 ><span style="color:#666666;">Weather</span> <span style="color:#FEB200;">App</span></h1>
+</header>
+
+<div class="Search_sec">
+	<input type="text" id="search-box" placeholder="Enter your Location">
+	<button id="search-btn">Search</button>
+	
+</div>
+<div class="Weather-info-container">
+	<div style="position:relative;">
+	<h2 id="loctaion-name">Location</h2>
+	<small id="state"></small>
+	</div>
+
+	<div class="weather-info">
+		<div id="status-img"><img src="http://cdn.weatherapi.com/weather/64x64/day/116.png"></div>
+		<p id="status">--</p>
+		<p>Cureent Temp : <span id="current-temp">-° c</span></p>
+		<p>Min Temp : <span id="Min-temp">-° c</span></p>
+		<p>Max Temp : <span id="Max-temp">-° c</span></p>
+	</div>
+	
+</div>
+
+
+<script>
+
+//'https://bestweather.p.rapidapi.com/weather/palanpur/today?unitGroup=us'
+
+const URL='http://api.weatherapi.com/v1/current.json?key=8c2d64fadfd743d8ab0100416220809&q=';
+const EndUrl="&aqi=no"
+
+
+
+// fetch(URL+name+EndUrl)
+// 	.then(response => response.json())
+// 	.then(response => console.log(response))
+
+
+
+
+const SearchWeather=async(name)=>{
+	const respons=await fetch(URL+name+EndUrl);
+	const data=await respons.json();
+
+	const displayData=()=>{
+	console.log(data);
+	document.getElementById('loctaion-name').innerText=data.location.name;
+	document.getElementById('state').innerText=data.location.region;
+	document.getElementById('status-img').innerHTML=`<img src="http:${data.current.condition.icon}"/>`
+	// console.log()
+	document.getElementById('status').innerText=data.current.condition.text;
+	document.getElementById('current-temp').innerText=data.current.temp_c+"° c";
+	// document.getElementById('loctaion-name').innerText=
+	// document.getElementById('loctaion-name').innerText=
+   }
+   displayData();
+
+}
+
+const btn=document.getElementById('search-btn');
+btn.onclick=()=>{
+	const SerachBox=document.getElementById('search-box').value;
+	SearchWeather(SerachBox)
+
+}
+const Serachbox=document.getElementById('search-box');
+
+Serachbox.addEventListener("keypress",(e)=>{
+	if(e.key==="Enter"){
+		const SerachBox=document.getElementById('search-box').value;
+		SearchWeather(SerachBox)
+	}
+})
+
+
+
+</script>
+</body>
+</html>
